@@ -9,6 +9,10 @@ body {
 main{
   flex: 1;
 }
+.btn-primary{
+  background-color: #f0c040;
+  color: #404040;
+}
 .site-container{
   min-height: 100vh ;
 }
@@ -27,5 +31,8 @@ main{
 }
 .product-infor{
   padding: 1rem;
+}
+.rating span{
+  color:#ffc000
 }
 
