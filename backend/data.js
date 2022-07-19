@@ -19,7 +19,7 @@ const data = {
         image: '/images/27.jpg',
         price: 100,
         brand: 'Adidas',
-        countInStock: 100,
+        countInStock: 130,
         rating: 4.5,
         numReviews: 20,
         description: 'High quality adidas shirts',

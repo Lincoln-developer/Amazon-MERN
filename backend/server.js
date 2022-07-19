@@ -1,18 +1,18 @@
 import express from "express"
 import data from "./data.js";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import seedRoute from "./routes/seedRoutes.js"
+//import mongoose from "mongoose";
+//import dotenv from "dotenv";
+//import seedRoute from "./routes/seedRoutes.js"
 
 //Loading environment variables
-dotenv.config();
+/*dotenv.config();
 //connecting to database
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('Connected to db'))
-.catch(err => console.log(err.message))
+.catch(err => console.log(err.message))*/
 
 const app = express();
-app.use('/api/seed',seedRoute);
+//app.use('/api/seed',seedRoute);
 app.get('/api/products',(req,res)=>{
     res.send(data.products);
 })
