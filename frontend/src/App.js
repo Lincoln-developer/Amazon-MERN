@@ -1,24 +1,39 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
+import Badge from 'react-bootstrap/Badge';
+import { useContext } from 'react';
+import { Store } from './Store';
 
 function App() {
+  const { state } = useContext(Store);
+  const { cart } = state;
   return (
     <BrowserRouter>
-      <div className='d-flex flex-column site-container'>
+      <div className="d-flex flex-column site-container">
         <header>
           <Navbar bg="dark" variant="dark">
             <Container>
               <LinkContainer to="/">
                 <Navbar.Brand>amazona</Navbar.Brand>
               </LinkContainer>
+              <Navbar className="me-auto">
+                <Link to="/cart" className="nav-link">
+                  Cart
+                  {cart.cartItems.length > 0 && (
+                    <Badge pill bg="danger">
+                      {cart.cartItems.length}
+                    </Badge>
+                  )}
+                </Link>
+              </Navbar>
             </Container>
           </Navbar>
         </header>
-        <main className='mt-3'>
+        <main className="mt-3">
           <Container>
             <Routes>
               <Route path="/products/:slug" element={<ProductScreen />} />
@@ -26,7 +41,7 @@ function App() {
             </Routes>
           </Container>
         </main>
-        <footer className='text-center'>
+        <footer className="text-center">
           <p>All rights reserved</p>
         </footer>
       </div>
