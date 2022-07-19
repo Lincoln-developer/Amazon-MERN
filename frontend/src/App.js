@@ -8,6 +8,7 @@ import Badge from 'react-bootstrap/Badge';
 import { useContext } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
+import SigninScreen from './screens/SigninScreen';
 
 function App() {
   const { state } = useContext(Store);
@@ -19,7 +20,7 @@ function App() {
           <Navbar bg="dark" variant="dark">
             <Container>
               <LinkContainer to="/">
-                <Navbar.Brand>amazona</Navbar.Brand>
+                <Navbar.Brand>CloudFlare</Navbar.Brand>
               </LinkContainer>
               <Navbar className="me-auto">
                 <Link to="/cart" className="nav-link">
@@ -39,6 +40,7 @@ function App() {
             <Routes>
               <Route path="/products/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
+              <Route path="/signin" element={<SigninScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>

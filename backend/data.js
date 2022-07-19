@@ -47,7 +47,7 @@ const data = {
         image: '/images/27.jpg',
         price: 500,
         brand: 'jordan',
-        countInStock: 0,
+        countInStock: 67,
         rating: 4.5,
         numReviews: 18,
         description: 'High quality jordan shirts',
