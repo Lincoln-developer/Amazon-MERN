@@ -12,11 +12,11 @@ export default function PaymentMethodScreen() {
   const {
     cart: { shippingAddress, paymentMethod },
   } = state;
-  const [paymentMethodName, setPaymentMethodName] = useState(
+  const [paymentMethodName, setPaymentMethod] = useState(
     paymentMethod || 'PayPal'
   );
   useEffect(() => {
-    if (shippingAddress.address) {
+    if (!shippingAddress.address) {
       navigate('/shipping');
     }
   }, [shippingAddress, navigate]);
@@ -42,7 +42,7 @@ export default function PaymentMethodScreen() {
               lable="PayPal"
               value="PayPal"
               checked={paymentMethodName === 'PayPal'}
-              onChange={(e) => setPaymentMethodName(e.target.value)}
+              onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>
           <div className="mb-3">
@@ -52,7 +52,7 @@ export default function PaymentMethodScreen() {
               lable="Stripe"
               value="Stripe"
               checked={paymentMethodName === 'Stripe'}
-              onChange={(e) => setPaymentMethodName(e.target.value)}
+              onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>
           <div className="mb-3">

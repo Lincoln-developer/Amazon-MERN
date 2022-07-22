@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { Helmet } from 'react-helmet-async';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Row from 'react-bootstrap/Row';
@@ -10,9 +10,28 @@ import { Store } from '../Store';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { getError } from '../utils';
+import axios from 'axios';
+import LoadingBox from '../components/LoadingBox';
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'CREATE_REQUEST':
+      return { ...state, loading: true };
+    case 'CREATE_SUCCESS':
+      return { ...state, loading: false };
+    case 'CREATE_FAIL':
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
+  const [{ loading }, dispatch] = useReducer(reducer, {
+    loading: false,
+  });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfor } = state;
 
@@ -23,7 +42,35 @@ export default function PlaceOrderScreen() {
   cart.shippingPrice = cart.cartPrice > 100 ? round2(0) : round2(10);
   cart.taxPrice = round2(0.15 * cart.itemsPrice);
   cart.totalPrice = cart.shippingPrice + cart.taxPrice + cart.itemsPrice;
-  const placeOrderHandler = () => {};
+  const placeOrderHandler = async () => {
+    try {
+      dispatch({ type: 'CREATE_REQUEST' });
+      const { data } = await axios.post(
+        '/api/orders',
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          taxPrice: cart.taxPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfor.token}`,
+          },
+        }
+      );
+      ctxDispatch({ type: 'CART_CLEAR' });
+      dispatch({ type: 'CREATE_SUCCESS' });
+      localStorage.removeItem('cartItems');
+      navigate(`/order/${data.order._id}`);
+    } catch (err) {
+      dispatch({ type: 'CREATE_FAIL' });
+      toast.error(getError(err));
+    }
+  };
 
   useEffect(() => {
     if (!cart.paymentMethod) {
@@ -43,15 +90,18 @@ export default function PlaceOrderScreen() {
             <Card.Body>
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
-                <strong>Name:</strong>
+                <strong>Full Name:</strong>
                 {cart.shippingAddress.fullName}
                 <br />
-                <strong>:Address</strong>
+                <strong>Address:</strong>
                 {cart.shippingAddress.address}
                 <br />
+                <strong>City:</strong> {cart.shippingAddress.city}
+                <br />
+                <strong>Postal Code:</strong>
                 {cart.shippingAddress.postalCode}
-                {cart.shippingAddress.city}
-                {cart.shippingAddress.postalCode}
+                <br />
+                <strong>Country:</strong>
                 {cart.shippingAddress.country}
               </Card.Text>
               <Link to="/shipping">Edit</Link>
@@ -76,19 +126,21 @@ export default function PlaceOrderScreen() {
                     <Row className="align-items-center">
                       <Col md={6}>
                         <img
-                          src={item.iamge}
+                          src={item.image}
                           alt={item.name}
                           className="img-fluid rounded img-thumbnail"
                         ></img>{' '}
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
-                      <Col md={3}>{item.quantity}</Col>
-                      <Col md={3}>{item.price}</Col>
+                      <Col md={3}>
+                        <span>{item.quantity}</span>
+                      </Col>
+                      <Col md={3}>${item.price}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
               </ListGroup>
-              <Link to="/payment">Edit</Link>
+              <Link to="/cart">Edit</Link>
             </Card.Body>
           </Card>
         </Col>
@@ -130,6 +182,7 @@ export default function PlaceOrderScreen() {
                     >
                       Place Order
                     </Button>
+                    {loading ? <LoadingBox></LoadingBox> :   getError()}
                   </div>
                 </ListGroup.Item>
               </ListGroup>
