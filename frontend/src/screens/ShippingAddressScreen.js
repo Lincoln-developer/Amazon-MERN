@@ -6,12 +6,15 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import CheckoutSteps from '../components/CheckoutSteps';
+
 export default function ShippingAddressScreen() {
+
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     userInfor,
     cart: { shippingAddress },
   } = state;
+
   const navigate = useNavigate();
   const [fullName, setFullName] = useState(shippingAddress.fullName || '');
   const [address, setAddress] = useState(shippingAddress.address || '');
@@ -19,12 +22,14 @@ export default function ShippingAddressScreen() {
   const [postalCode, setPostalCode] = useState(
     shippingAddress.postalCode || ''
   );
+  const [country, setCountry] = useState(shippingAddress.country || '');
+
   useEffect(() => {
     if (!userInfor) {
       navigate('/signin?redirect=/shipping');
     }
   }, [userInfor, navigate]);
-  const [country, setCountry] = useState(shippingAddress.country || '');
+
   const submitHandler = (e) => {
     e.preventDefault();
     ctxDispatch({

@@ -39,7 +39,7 @@ export default function PlaceOrderScreen() {
   cart.itemsPrice = round2(
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
-  cart.shippingPrice = cart.cartPrice > 100 ? round2(0) : round2(10);
+  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
   cart.taxPrice = round2(0.15 * cart.itemsPrice);
   cart.totalPrice = cart.shippingPrice + cart.taxPrice + cart.itemsPrice;
   const placeOrderHandler = async () => {
@@ -182,7 +182,7 @@ export default function PlaceOrderScreen() {
                     >
                       Place Order
                     </Button>
-                    {loading ? <LoadingBox></LoadingBox> :   getError()}
+                    {loading && <LoadingBox></LoadingBox>}
                   </div>
                 </ListGroup.Item>
               </ListGroup>
