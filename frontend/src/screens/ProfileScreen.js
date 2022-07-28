@@ -27,8 +27,7 @@ export default function ProfileScreen() {
   const [email, setEmail] = useState(userInfor.email);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  const [dispatch] = useReducer(reducer, {
+  const [{loadingUpdate},dispatch] = useReducer(reducer, {
     loadingUpdate: false,
   });
   const submitHandler = async (e) => {
@@ -50,7 +49,7 @@ export default function ProfileScreen() {
       localStorage.setItem('userInfor', JSON.stringify(data));
       toast.success('User updated successfully');
     } catch (err) {
-      dispatch({ type: 'UPDATE_FAIL' });
+      dispatch({ type: 'FETCH_FAIL' });
       toast.error(getError(err));
     }
   };
@@ -91,6 +90,7 @@ export default function ProfileScreen() {
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+          {confirmPassword === password ? 'Passwords match' : 'passwords do not match'}
         </Form.Group>
         <div className="mb-3">
           <Button type="submit">Update</Button>
