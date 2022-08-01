@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 
+//Reducer function to manage states fetch request,success and fail
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -28,6 +29,7 @@ function HomeScreen() {
   });
   useEffect(() => {
     const fetchData = async () => {
+      //fetchData function to fetch all products
       dispatch({ type: 'FETCH_REQUEST' });
       try {
         const result = await axios.get('/api/products');
@@ -52,7 +54,7 @@ function HomeScreen() {
           <Row>
             {products.map((product) => (
               <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                <Product product={product}></Product>
+                <Product product={product}/>
               </Col>
             ))}
           </Row>

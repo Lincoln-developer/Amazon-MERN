@@ -42,7 +42,7 @@ const data = {
       {
         name: 'Puma Slim Shirt',
         slug: 'puma-slim-shirt',
-        category: 'Shirts',
+        category: 'pants',
         image: '/images/27.jpg',
         price: 90,
         brand: 'Puma',
@@ -54,7 +54,7 @@ const data = {
       {
         name: 'Jordan Slim Shirt',
         slug: 'jordan-slim-shirt',
-        category: 'Shirts',
+        category: 'pants',
         image: '/images/27.jpg',
         price: 500,
         brand: 'jordan',
