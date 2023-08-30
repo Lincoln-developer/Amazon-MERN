@@ -1,1 +1,1 @@
-# Ecommerce platform with PayPal and Stripe gateway integrations
+# Ecommerce platform with PayPal and Stripe payment gateway integrations
